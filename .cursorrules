@@ -1,0 +1,116 @@
+# Tool Directory Website
+
+Every time you choose to apply a rule(s), explicitly state the rule(s) in the output. You can abbreviate the rule description to a single word or phrase.
+
+## Project Context
+
+A Next.js-based tool directory website with a modern UI, integrated with Builder.io for visual content management.
+
+- Target audience: developers and non-developers who need to manage and access a centralized directory of tools.
+- Architectural principles: component-driven UI, headless CMS, server-side rendering, and static site generation.
+
+## Code Style and Structure
+
+- Follow a modular and component-driven approach.
+- Maintain a clean and well-organized codebase with consistent formatting.
+- Use TypeScript for type safety and improved code maintainability.
+
+Folder structure:
+```
+tool-directory-website/
+├── app/                  # Next.js app directory (if using the App Router)
+│   ├── layout.tsx        # Global layout component
+│   └── page.tsx          # Home page
+├── components/           # Reusable UI components
+│   ├── ui/               # shadcn/ui components (e.g., Button, Card, etc.)
+│   └── ToolCard.tsx      # Component for displaying a tool entry
+├── lib/                  # Utility functions and API clients
+│   └── builder.ts        # Builder.io integration utilities
+├── public/               # Static assets (images, icons, etc.)
+├── styles/               # Global styles (e.g., global.css with Tailwind directives)
+├──.env.local            # Environment variables (Builder.io API key)
+├── package.json
+├── tailwind.config.js
+└── tsconfig.json
+```
+
+## Tech Stack
+
+- Next.js
+- Tailwind CSS
+- TypeScript
+- shadcn/ui
+- Builder.io
+- Yarn (package manager)
+
+## Naming Conventions
+
+- Use PascalCase for component names.
+- Use camelCase for variable and function names.
+- Use kebab-case for CSS classes and file names.
+
+## JavaScript/TypeScript Usage
+
+- Follow ESLint rules for consistent code style.
+- Use descriptive variable and function names.
+- Write clear and concise comments.
+
+## State Management
+
+- Use Zustand for managing global state.
+
+## Syntax and Formatting
+
+- Follow Prettier rules for consistent code formatting.
+- Use meaningful commit messages.
+
+## UI and Styling
+
+- Use shadcn/ui components for building the UI.
+- Follow Tailwind CSS best practices for styling.
+- Ensure responsive design for all devices.
+
+## Error Handling
+
+- Implement proper error handling and logging.
+- Display user-friendly error messages.
+
+## Testing
+
+- Write unit tests for all components and functions.
+- Use Jest and React Testing Library for testing.
+
+## Security
+
+- Follow security best practices for Next.js and Builder.io.
+- Sanitize user inputs to prevent vulnerabilities.
+
+## Git Usage
+
+Commit Message Prefixes:
+
+- "fix:" for bug fixes
+- "feat:" for new features
+- "perf:" for performance improvements
+- "docs:" for documentation changes
+- "style:" for formatting changes
+- "refactor:" for code refactoring
+- "test:" for adding missing tests
+- "chore:" for maintenance tasks
+
+Rules:
+
+- Write clear and concise commit messages.
+- Reference related issues or pull requests.
+
+## Documentation
+
+- Maintain up-to-date documentation in the README.md file.
+- Document all components and functions.
+
+## Development Workflow
+
+- Use Yarn as the package manager for dependency management
+- Follow Gitflow for version control
+- Conduct code reviews before merging changes
+- Use semantic versioning for releases
