@@ -1,4 +1,4 @@
-# Tool Directory Templategit
+# Tool Directory Template
 
 This repository contains a fully featured tool directory website built with Next.js, Tailwind CSS, TypeScript, shadcn/ui, and integrated with Builder.io for visual content management. The site serves as a centralized directory for various tools and resources, combining a modern, component-driven UI with a headless CMS to allow non-developers to update content visually.
 
@@ -58,7 +58,7 @@ Follow these steps to set up the project locally:
 
 ### Clone the Repository:
 ```bash
-git clone https://github.com/yourusername/tool-directory-website.git
+git clone https://github.com/nsollazzo/tool-directory-template.git
 cd tool-directory-website
 ```
 
