@@ -1,16 +1,10 @@
+'use client'
+
 import { Builder, builder } from '@builder.io/react'
 import { ToolCard } from '@/components/ToolCard'
 
 // Initialize the Builder instance with your API key
-if (typeof window !== 'undefined') {
-  // Initialize with API key
-  builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!)
-
-  // Set default options
-  builder.setUserAttributes({
-    urlPath: window.location.pathname,
-  })
-}
+builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!)
 
 // Register your components
 Builder.registerComponent(ToolCard, {

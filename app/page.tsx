@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { builder } from '@/lib/builder'
-import { BuilderComponent } from '@builder.io/react'
+import { BuilderContent } from '@/components/builder-content'
 import { ToolCard } from "@/components/ToolCard"
 import {
   Select,
@@ -219,7 +219,7 @@ export default function HomePage() {
 
         {/* Builder.io Content */}
         {builderContent && (
-          <BuilderComponent
+          <BuilderContent
             model="page"
             content={builderContent}
           />
