@@ -70,7 +70,40 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#333333',
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+              fontWeight: '500',
+            },
+            strong: {
+              color: 'inherit',
+              fontWeight: '600',
+            },
+            li: {
+              marginTop: '0.5em',
+              marginBottom: '0.5em',
+              color: '#333333',
+            },
+            ul: {
+              marginTop: '1.25em',
+              marginBottom: '1.25em',
+              color: '#333333',
+            },
+            p: {
+              color: '#333333',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
 } 

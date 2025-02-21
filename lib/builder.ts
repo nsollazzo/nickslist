@@ -30,6 +30,11 @@ Builder.registerComponent(ToolCard, {
       type: 'string',
       required: true,
     },
+    {
+      name: 'sponsor',
+      type: 'boolean',
+      defaultValue: false,
+    },
   ],
 })
 

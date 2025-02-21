@@ -1,17 +1,37 @@
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, Star } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface ToolCardProps {
   name: string
   description: string
+  shortDescription?: string
   category: string
   url: string
+  recommended?: boolean
+  personalNote?: string
 }
 
-export function ToolCard({ name, description, category, url }: ToolCardProps) {
+export function ToolCard({ 
+  name, 
+  description, 
+  shortDescription,
+  category, 
+  url, 
+  recommended = false,
+  personalNote 
+}: ToolCardProps) {
   return (
-    <Card className="group relative flex flex-col h-full border-2 border-primary hover:bg-primary hover:text-primary-foreground transition-all">
+    <Card className={cn(
+      "group relative flex flex-col h-full border-2 hover:bg-primary hover:text-primary-foreground transition-all",
+      recommended ? "border-[#4CAF50]" : "border-primary"
+    )}>
+      {recommended && (
+        <div className="absolute -top-3 left-4 z-20 px-2 py-0.5 bg-[#4CAF50] text-white text-xs font-semibold rounded flex items-center gap-1">
+          <Star className="h-3 w-3" /> TOP PICK
+        </div>
+      )}
       <Link 
         href={`/${encodeURIComponent(name.toLowerCase())}`}
         className="absolute inset-0 z-10"
@@ -36,10 +56,15 @@ export function ToolCard({ name, description, category, url }: ToolCardProps) {
           {category}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-2">
         <p className="text-sm group-hover:text-primary-foreground transition-colors line-clamp-3">
-          {description}
+          {shortDescription || description}
         </p>
+        {personalNote && (
+          <div className="mt-2 p-2 bg-muted/50 rounded-md text-sm italic group-hover:bg-primary-foreground/10">
+            "Nick's note: {personalNote}"
+          </div>
+        )}
       </CardContent>
     </Card>
   )

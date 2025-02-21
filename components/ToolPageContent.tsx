@@ -12,6 +12,7 @@ interface BuilderTool {
   data?: {
     name: string
     description: string
+    shortDescription?: string
     category: {
       '@type': '@builder.io/core:Reference'
       id: string
@@ -92,6 +93,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
         setTool({
           name: matchingTool.data.name,
           description: matchingTool.data.description,
+          shortDescription: matchingTool.data.shortDescription,
           category: typeof matchingTool.data.category === 'string'
             ? matchingTool.data.category
             : categoryMap.get(matchingTool.data.category.id) || 'Uncategorized',
@@ -168,7 +170,10 @@ export function ToolPageContent({ slug }: { slug: string }) {
           {/* Tool Header Info */}
           <div>
             <h1 className="text-4xl font-bold mb-4">{tool.name}</h1>
-            <p className="text-lg text-muted-foreground mb-6">{tool.description}</p>
+            <div 
+              className="text-lg mb-6 prose prose-lg prose-gray dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: tool.description }}
+            />
             <div className="flex items-center gap-4">
               <a 
                 href={tool.url}

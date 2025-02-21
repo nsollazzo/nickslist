@@ -30,7 +30,7 @@ export default function RootLayout({
               <div className="mr-4 flex">
                 <a className="mr-6 flex items-center space-x-2 hover:text-primary transition-colors" href="/">
                   <span className="font-black text-lg tracking-tight">
-                    Tool Directory Template
+                    Nick's List
                   </span>
                 </a>
               </div>

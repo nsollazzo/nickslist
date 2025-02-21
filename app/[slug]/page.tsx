@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
     return constructMetadata({
       title: tool.data.name,
-      description: tool.data.description,
+      description: tool.data.shortDescription || tool.data.description,
       image: tool.data.image,
       type: 'article',
     })

@@ -17,6 +17,7 @@ interface BuilderTool {
   data?: {
     name: string
     description: string
+    shortDescription?: string
     category: {
       '@type': '@builder.io/core:Reference'
       id: string
@@ -24,6 +25,7 @@ interface BuilderTool {
     } | string
     url: string
     image?: string
+    sponsor?: boolean
     features?: Array<{ feature: string }>
     documentation?: string
     pricing?: {
@@ -162,8 +164,10 @@ export default function HomePage() {
             return {
               name: item.data.name,
               description: item.data.description,
+              shortDescription: item.data.shortDescription,
               category: categoryName,
               url: item.data.url,
+              recommended: item.data.sponsor || false,
               image: item.data.image,
               features: item.data.features?.map(f => f.feature),
               documentation: item.data.documentation,
@@ -210,6 +214,14 @@ export default function HomePage() {
   return (
     <div className="flex-1">
       <div className="container px-4 py-10 md:py-16">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-bold mb-4">Nick's List</h1>
+          <p className="text-xl text-[#333333] max-w-2xl mx-auto">
+            A curated collection of tools and resources that Nick recommends for developers and tech enthusiasts.
+          </p>
+        </div>
+
         {/* Error Message */}
         {error && (
           <div className="mb-8 p-4 border-2 border-red-500 bg-red-50 text-red-700 rounded">
@@ -274,8 +286,11 @@ export default function HomePage() {
                 key={tool.name}
                 name={tool.name}
                 description={tool.description}
+                shortDescription={tool.shortDescription}
                 category={tool.category}
                 url={tool.url}
+                recommended={tool.recommended}
+                personalNote={tool.personalNote}
               />
             ))
           )}

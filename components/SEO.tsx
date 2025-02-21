@@ -9,9 +9,9 @@ interface SEOProps {
 }
 
 const defaultSEO = {
-  title: 'Tool Directory Template',
-  description: 'A modern, searchable tool directory template built with Next.js, Tailwind CSS, and Builder.io',
-  url: 'https://tool-directory-template.vercel.app',
+  title: "Nick's List",
+  description: "A curated collection of tools and resources that Nick recommends for developers and tech enthusiasts",
+  url: 'https://nickslist.vercel.app',
   image: '/og-image.png',
 }
 
@@ -28,16 +28,16 @@ export function constructMetadata({
       template: `%s | ${defaultSEO.title}`,
     },
     description,
-    keywords: ['tool directory', 'template', 'next.js', 'react', 'tailwind css', 'builder.io'],
-    authors: [{ name: defaultSEO.title }],
-    creator: defaultSEO.title,
+    keywords: ['developer tools', 'software recommendations', 'tech tools', 'nick\'s picks', 'development resources'],
+    authors: [{ name: 'Nick' }],
+    creator: 'Nick',
     publisher: defaultSEO.title,
     robots: {
       index: robots,
       follow: robots,
     },
     openGraph: {
-      type,
+      type: type as 'website',
       locale: 'en_US',
       url: defaultSEO.url,
       siteName: defaultSEO.title,
