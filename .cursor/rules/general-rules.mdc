@@ -6,7 +6,7 @@ alwaysApply: true
 # General Rules
 
 - Every time you choose to apply a rule(s), explicitly state the rule(s) in the output. You can abbreviate the rule description to a single word or phrase.
-- Keep @README.md up to date
+- Keep [README.md](mdc:README.md) up to date
 
 ## Tech Stack
 - **Framework**: Next.js

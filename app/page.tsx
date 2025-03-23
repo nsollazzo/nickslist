@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Tool } from '@/types/tool'
+import { Search, X } from 'lucide-react'
+import { Input } from "@/components/ui/input"
 
 interface BuilderTool {
   data?: {
@@ -74,6 +76,7 @@ export default function HomePage() {
   const [categories, setCategories] = useState<string[]>(['All'])
   const [error, setError] = useState<string | null>(null)
   const [categoryMap, setCategoryMap] = useState<Map<string, string>>(new Map())
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
   // Fetch categories from Builder.io
   useEffect(() => {
@@ -214,9 +217,13 @@ export default function HomePage() {
     fetchContent()
   }, [])
 
-  // Filter tools based on selected category
+  // Filter tools based on selected category and search query
   const filteredTools = tools.filter(tool => 
-    selectedCategory === 'All' || tool.category === selectedCategory
+    (selectedCategory === 'All' || tool.category === selectedCategory) &&
+    (searchQuery === '' || 
+     tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+     (tool.shortDescription && tool.shortDescription.toLowerCase().includes(searchQuery.toLowerCase())))
   )
 
   return (
@@ -228,6 +235,29 @@ export default function HomePage() {
           <p className="text-xl text-[#333333] dark:text-[#E5E5E5] max-w-2xl mx-auto">
             A curated collection of tools and resources that Nick recommends for developers and tech enthusiasts.
           </p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-8 max-w-md mx-auto">
+          <div className="relative">
+            <div className="flex items-center border rounded-md bg-background">
+              <Search className="absolute left-2 h-4 w-4 shrink-0 text-muted-foreground" />
+              <Input
+                placeholder="Search tools..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 pr-8"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 h-4 w-4 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Error Message */}
