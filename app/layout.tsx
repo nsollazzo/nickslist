@@ -4,6 +4,7 @@ import './globals.css'
 import { constructMetadata } from '@/components/SEO'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { PWASetup } from '@/components/PWASetup'
 
 export const metadata = constructMetadata()
 
@@ -16,8 +17,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
+        <PWASetup />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
