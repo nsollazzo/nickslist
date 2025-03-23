@@ -12,6 +12,6 @@ alwaysApply: true
 - **Framework**: Next.js
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
+- **UI Components**: shadcn/ui, Geist UI
 - **CMS**: Builder.io
 - **Package Manager**: Yarn
