@@ -56,5 +56,11 @@ Builder.registerComponent(ToolCard, {
       type: "string",
       required: true,
     },
+    {
+      name: "icon",
+      type: "file",
+      allowedFileTypes: ["jpeg", "jpg", "png", "svg"],
+      required: false,
+    },
   ],
 });

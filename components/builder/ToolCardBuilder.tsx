@@ -7,10 +7,11 @@ interface ToolCardBuilderProps {
   shortDescription?: string
   category: string
   url: string
+  icon?: string
 }
 
-export const ToolCardBuilder = ({ name, description, shortDescription, category, url }: ToolCardBuilderProps) => {
-  return <ToolCard name={name} description={description} shortDescription={shortDescription} category={category} url={url} />
+export const ToolCardBuilder = ({ name, description, shortDescription, category, url, icon }: ToolCardBuilderProps) => {
+  return <ToolCard name={name} description={description} shortDescription={shortDescription} category={category} url={url} icon={icon} />
 }
 
 // Register the component with Builder.io
@@ -41,6 +42,12 @@ Builder.registerComponent(ToolCardBuilder, {
       name: 'url',
       type: 'string',
       required: true,
+    },
+    {
+      name: 'icon',
+      type: 'file',
+      allowedFileTypes: ['jpeg', 'jpg', 'png', 'svg'],
+      required: false,
     },
   ],
 }) 

@@ -20,6 +20,7 @@ interface BuilderTool {
     } | string
     url: string
     image?: string
+    icon?: string
     features?: Array<{ feature: string }>
     documentation?: string
     pricing?: {
@@ -99,6 +100,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
             : categoryMap.get(matchingTool.data.category.id) || 'Uncategorized',
           url: matchingTool.data.url,
           image: matchingTool.data.image,
+          icon: matchingTool.data.icon,
           features: matchingTool.data.features?.map(f => f.feature),
           documentation: matchingTool.data.documentation,
           pricing: matchingTool.data.pricing,

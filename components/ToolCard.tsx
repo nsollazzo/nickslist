@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ExternalLink, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -11,6 +12,7 @@ interface ToolCardProps {
   url: string
   recommended?: boolean
   personalNote?: string
+  icon?: string
 }
 
 export function ToolCard({ 
@@ -20,7 +22,8 @@ export function ToolCard({
   category, 
   url, 
   recommended = false,
-  personalNote 
+  personalNote,
+  icon
 }: ToolCardProps) {
   return (
     <Card className={cn(
@@ -41,7 +44,19 @@ export function ToolCard({
       </Link>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-bold line-clamp-1">{name}</CardTitle>
+          <div className="flex items-center space-x-2">
+            {icon && (
+              <div className="relative h-6 w-6 overflow-hidden">
+                <Image
+                  src={icon}
+                  alt={`${name} icon`}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            <CardTitle className="text-xl font-bold line-clamp-1">{name}</CardTitle>
+          </div>
           <a
             href={url}
             target="_blank"

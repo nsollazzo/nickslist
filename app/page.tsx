@@ -25,6 +25,7 @@ interface BuilderTool {
     } | string
     url: string
     image?: string
+    icon?: string
     sponsor?: boolean
     features?: Array<{ feature: string }>
     documentation?: string
@@ -161,6 +162,12 @@ export default function HomePage() {
               ? item.data.category 
               : categoryMap.get(item.data.category.id) || 'Uncategorized'
 
+            console.log('Tool data:', {
+              name: item.data.name,
+              icon: item.data.icon,
+              fullData: item.data
+            })
+
             return {
               name: item.data.name,
               description: item.data.description,
@@ -169,6 +176,7 @@ export default function HomePage() {
               url: item.data.url,
               recommended: item.data.sponsor || false,
               image: item.data.image,
+              icon: item.data.icon,
               features: item.data.features?.map(f => f.feature),
               documentation: item.data.documentation,
               pricing: item.data.pricing,
@@ -217,7 +225,7 @@ export default function HomePage() {
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl font-bold mb-4">Nick's List</h1>
-          <p className="text-xl text-[#333333] max-w-2xl mx-auto">
+          <p className="text-xl text-[#333333] dark:text-[#E5E5E5] max-w-2xl mx-auto">
             A curated collection of tools and resources that Nick recommends for developers and tech enthusiasts.
           </p>
         </div>
@@ -291,6 +299,7 @@ export default function HomePage() {
                 url={tool.url}
                 recommended={tool.recommended}
                 personalNote={tool.personalNote}
+                icon={tool.icon}
               />
             ))
           )}

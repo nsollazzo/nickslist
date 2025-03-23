@@ -5,6 +5,7 @@ export interface Tool {
   category: string
   url: string
   image?: string
+  icon?: string
   recommended?: boolean
   personalNote?: string
   features?: string[]
