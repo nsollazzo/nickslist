@@ -1,0 +1,354 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# TDD Best Practices for Next.js with TypeScript, Shadcn UI, and Tailwind CSS
+
+Test-Driven Development (TDD) provides a structured approach to writing reliable, maintainable code. When applied to Next.js applications using TypeScript, Shadcn UI, and Tailwind CSS, TDD can significantly improve code quality while ensuring your UI components behave and look as expected. This comprehensive guide outlines best practices and patterns for implementing TDD in your Next.js projects.
+
+## Understanding TDD Fundamentals
+
+The core of Test-Driven Development follows a simple yet powerful cycle known as Red-Green-Refactor:
+
+1. **Write a failing test first** (Red) - Define how your component should behave before writing any implementation code.
+2. **Write minimal code to pass the test** (Green) - Implement just enough code to make your test pass.
+3. **Refactor your code** (Refactor) - Clean up and optimize your implementation while ensuring tests continue to pass.
+
+This approach ensures your components meet their requirements while maintaining clean code. As one expert explains: "TDD will force developer to write a clean code. Your code will be tested before it went to deployment. So the chances of getting errors in production is less."
+
+### Benefits for Next.js Development
+
+TDD is particularly beneficial for Next.js applications because:
+
+- It encourages component-based testing, aligning with React's architecture
+- It provides immediate feedback on code correctness
+- It promotes modular, maintainable code structure
+- It facilitates confident refactoring as your application grows
+
+## Setting Up Your Testing Environment
+
+Before diving into TDD practices, you need to set up the appropriate testing tools for your Next.js project.
+
+### Recommended Testing Libraries
+
+For Next.js applications with TypeScript, Shadcn UI, and Tailwind, these testing libraries work best:
+
+- **Jest and React Testing Library**: The primary combination for unit and component testing
+- **Cypress or Playwright**: For end-to-end testing
+- **MSW (Mock Service Worker)**: For mocking API responses
+- **Storybook with Lost Pixel**: For visual regression testing of Shadcn UI components
+
+### Basic Setup for Jest and React Testing Library
+
+Next.js provides built-in configuration for Jest since version 12, making setup relatively straightforward:
+
+```bash
+npm install -D jest jest-environment-jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom ts-node
+```
+
+Create a Jest configuration file that leverages Next.js's built-in support:
+
+```typescript
+import type { Config } from 'jest'
+import nextJest from 'next/jest.js'
+
+const createJestConfig = nextJest({
+  dir: './',
+})
+
+const config: Config = {
+  coverageProvider: 'v8',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+}
+
+export default createJestConfig(config)
+```
+
+And a setup file for additional configurations:
+
+```typescript
+// jest.setup.ts
+import '@testing-library/jest-dom'
+```
+
+## Structuring Tests in Next.js
+
+Where you place your tests can significantly impact maintainability and clarity.
+
+### App Router vs. Pages Router
+
+The app router and pages router have different considerations for test file locations:
+
+**App Router**:
+- Test files can safely coexist within the app directory
+- Next.js only treats specific files (e.g., page.js, route.js) as routes
+
+**Pages Router**:
+- Avoid placing tests in the `/pages` directory as they might be treated as routes
+- "Pages should only be end to end tested because they're ideally composed of individual components that are unit tested separately."
+
+### Co-location vs. Dedicated Test Directory
+
+There are two main approaches to organizing test files:
+
+1. **Co-location**: Place test files next to the code they test
+   ```
+   components/
+     Button/
+       Button.tsx
+       Button.test.tsx
+   ```
+
+2. **Dedicated test directory**: Create a mirrored structure in a separate directory
+   ```
+   src/
+     components/
+       Button.tsx
+   tests/
+     components/
+       Button.test.tsx
+   ```
+
+"I'm of the opinion that you should locate your files closest to where they are relevant (which as far as unit tests go is right along side the file for the unit being tested)."
+
+## Unit Testing Components with TypeScript, Shadcn UI, and Tailwind
+
+Unit testing is the foundation of TDD, testing individual components in isolation.
+
+### TypeScript-Enhanced Testing
+
+TypeScript adds type safety to your tests, providing an additional layer of confidence:
+
+```typescript
+// Button.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import Button from './Button'
+
+describe('Button', () => {
+  it('should render correctly with props', () => {
+    const handleClick = jest.fn()
+    render(<Button onClick={handleClick} variant="primary">Click me</Button>)
+    
+    const button = screen.getByText('Click me')
+    expect(button).toBeInTheDocument()
+    expect(button).toHaveClass('bg-blue-500') // Tailwind class
+    
+    fireEvent.click(button)
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+})
+```
+
+For strongly typed mocks, use TypeScript's type mapping capabilities:
+
+```typescript
+// Creating strongly typed mocks
+type Mockify<T> = { [P in keyof T]: jest.Mock<{}> }
+
+interface IDataService {
+  fetchData(): Promise<string[]>
+}
+
+const mockDataService: Mockify<IDataService> = {
+  fetchData: jest.fn()
+}
+```
+
+"This transformation forces the definition of each property which you can set to jest.fn(). There is a little of boilerplate that could be automated but overall, the idea is to have the strongly typed nature available."
+
+### Testing Shadcn UI Components
+
+Shadcn UI components require special techniques for testing due to their implementation details:
+
+```typescript
+// Testing a Shadcn UI Select component
+import { render, screen, fireEvent } from '@testing-library/react'
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select'
+
+test('select component changes value when option is selected', () => {
+  const handleValueChange = jest.fn()
+  
+  render(
+    <Select onValueChange={handleValueChange}>
+      <SelectTrigger>
+        <SelectValue placeholder="Select option" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+  
+  // Open the select dropdown
+  fireEvent.click(screen.getByText('Select option'))
+  
+  // Click on an option
+  fireEvent.click(screen.getByText('Apple'))
+  
+  // Verify the selection was made
+  expect(handleValueChange).toHaveBeenCalledWith('apple')
+})
+```
+
+"You need to use `fireEvent.pointerDown` to open up the select options in your unit test. You'll also need to mock a few things."
+
+### Testing Tailwind-Styled Components
+
+When testing components styled with Tailwind CSS, focus on functional behavior first, then ensure visual consistency:
+
+```typescript
+// Testing a Tailwind-styled component
+test('renders with correct Tailwind classes', () => {
+  render(<Card variant="primary" />)
+  
+  const card = screen.getByTestId('card')
+  expect(card).toHaveClass('rounded-lg shadow-md bg-white p-4')
+})
+```
+
+For visual regression testing, tools like Storybook with Lost Pixel are recommended:
+
+"Let's add a simple visual regression testing for our tailwind & shadcn-ui... We can see that in both of the **pattern** components that were using the `<Button/>` with primary variant we have the spotted regressions."
+
+## Integration Testing Strategies
+
+Integration tests verify how components work together, including API interactions.
+
+### Testing Component Interactions
+
+```typescript
+// Testing interaction between components
+test('form submission triggers the correct action', async () => {
+  render(<ContactForm onSubmit={mockSubmitHandler} />)
+  
+  await userEvent.type(screen.getByLabelText(/name/i), 'John Doe')
+  await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com')
+  await userEvent.click(screen.getByRole('button', { name: /submit/i }))
+  
+  expect(mockSubmitHandler).toHaveBeenCalledWith({
+    name: 'John Doe',
+    email: 'john@example.com'
+  })
+})
+```
+
+### Mocking API Responses
+
+Mock Service Worker (MSW) is excellent for simulating API interactions:
+
+```typescript
+// Setting up MSW for API mocking
+import { rest } from 'msw'
+import { setupServer } from 'msw/node'
+
+const server = setupServer(
+  rest.get('/api/users', (req, res, ctx) => {
+    return res(ctx.json([{ id: 1, name: 'John' }]))
+  })
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+
+test('fetches and displays users', async () => {
+  render(<UserList />)
+  
+  expect(await screen.findByText('John')).toBeInTheDocument()
+})
+```
+
+## End-to-End Testing for Next.js
+
+End-to-End tests verify complete user flows in a production-like environment.
+
+```typescript
+// Playwright E2E test example
+test('user can log in and access dashboard', async ({ page }) => {
+  await page.goto('/login')
+  
+  await page.fill('input[name="email"]', 'user@example.com')
+  await page.fill('input[name="password"]', 'password123')
+  await page.click('button[type="submit"]')
+  
+  // Verify redirect to dashboard
+  await expect(page).toHaveURL('/dashboard')
+  await expect(page.locator('h1')).toHaveText('Welcome to your Dashboard')
+})
+```
+
+"Good to know: Since `async` Server Components are new to the React ecosystem, Jest currently does not support them. While you can still run unit tests for synchronous Server and Client Components, we recommend using an E2E tests for `async` components."
+
+## Best Practices for TDD in the Next.js Ecosystem
+
+### 1. Write Small, Focused Tests
+
+"The first principle is to write small, focused tests. Each test should check a specific piece of functionality, ensuring that your component behaves as expected without testing too many things at once."
+
+### 2. Test Both Logic and Rendering
+
+For components using TypeScript, Shadcn UI, and Tailwind, test both behavior and appearance:
+
+```typescript
+test('button changes appearance when disabled', () => {
+  render(<Button disabled>Submit</Button>)
+  
+  const button = screen.getByText('Submit')
+  expect(button).toBeDisabled()
+  expect(button).toHaveClass('opacity-50 cursor-not-allowed')
+})
+```
+
+### 3. Use Data Attributes for Testing
+
+Shadcn UI components often have complex DOM structures. Use data attributes to make them easier to test:
+
+```typescript
+// Component with data-testid
+<Dialog>
+  <DialogTrigger data-testid="dialog-trigger">Open Dialog</DialogTrigger>
+  <DialogContent data-testid="dialog-content">
+    <DialogTitle>Title</DialogTitle>
+  </DialogContent>
+</Dialog>
+
+// Test
+test('dialog opens when trigger is clicked', async () => {
+  render(<MyDialog />)
+  
+  const trigger = screen.getByTestId('dialog-trigger')
+  await userEvent.click(trigger)
+  
+  expect(screen.getByTestId('dialog-content')).toBeInTheDocument()
+})
+```
+
+### 4. Test TypeScript Types
+
+For TypeScript projects, consider testing your type definitions:
+
+"You can add tests for your static TS types right next to your regular Jest tests... Next time you take the time to write complicated generic types for some utility function in your shared code, I hope you'll also take a little time to write tests for those types!"
+
+```typescript
+// Type testing example using jest-tsd
+import { expectType } from 'jest-tsd'
+import { Button } from './Button'
+
+test('Button component types', () => {
+  // Verify correct props are accepted
+  expectType<React.FC<{
+    variant?: 'primary' | 'secondary'
+    size?: 'sm' | 'md' | 'lg'
+    onClick?: () => void
+  }>>(Button)
+})
+```
+
+### 5. Visual Testing for Tailwind and Shadcn
+
+"Visual regression testing of shadcn-ui with Storybook... Learn how to test your shadcn-ui components with Storybook and Lost Pixel, open-source visual regression testing tool."
+
+This is especially important for Tailwind-styled components where the styling is achieved through utility classes rather than custom CSS.
