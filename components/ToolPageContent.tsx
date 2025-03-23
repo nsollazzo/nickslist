@@ -120,6 +120,13 @@ export function ToolPageContent({ slug }: { slug: string }) {
     }
   }, [slug, categoryMap])
 
+  // Update document title when tool is loaded
+  useEffect(() => {
+    if (tool) {
+      document.title = `${tool.name} - Nick's List`;
+    }
+  }, [tool]);
+
   if (loading) {
     return (
       <div className="container px-4 py-10">
@@ -141,7 +148,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
     <div className="container px-4 py-10">
       <Link 
         href="/" 
-        className="inline-flex items-center space-x-2 text-sm font-medium hover:text-primary transition-colors mb-8"
+        className="inline-flex items-center space-x-2 text-sm font-medium text-foreground hover:text-primary transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         <span>Back to Directory</span>
@@ -173,7 +180,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
           <div>
             <h1 className="text-4xl font-bold mb-4">{tool.name}</h1>
             <div 
-              className="text-lg mb-6 prose prose-lg prose-gray dark:prose-invert max-w-none"
+              className="text-lg mb-6 prose prose-lg prose-gray dark:prose-invert max-w-none dark:prose-p:text-foreground dark:prose-strong:text-foreground dark:prose-a:text-primary dark:prose-a:no-underline hover:dark:prose-a:underline dark:prose-li:text-foreground dark:prose-ul:text-foreground"
               dangerouslySetInnerHTML={{ __html: tool.description }}
             />
             <div className="flex items-center gap-4">
@@ -190,7 +197,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
                   href={tool.documentation}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-primary bg-primary/10 hover:bg-primary/20 transition-colors rounded-md"
+                  className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-primary dark:text-primary/90 bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 transition-colors rounded-md"
                 >
                   View Documentation
                 </a>
@@ -204,12 +211,12 @@ export function ToolPageContent({ slug }: { slug: string }) {
             <dl className="space-y-4">
               <div>
                 <dt className="font-medium">Category</dt>
-                <dd className="text-muted-foreground">{tool.category}</dd>
+                <dd className="text-foreground/80 dark:text-foreground/90">{tool.category}</dd>
               </div>
               {tool.pricing && (
                 <div>
                   <dt className="font-medium">Pricing</dt>
-                  <dd className="text-muted-foreground">
+                  <dd className="text-foreground/80 dark:text-foreground/90">
                     {tool.pricing.free && <div>✓ Free tier available</div>}
                     {tool.pricing.hasPaidPlan && tool.pricing.priceRange && (
                       <div>✓ Paid plans: {tool.pricing.priceRange}</div>
@@ -226,7 +233,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
               <h2 className="text-2xl font-semibold mb-4">Key Features</h2>
               <ul className="list-disc list-inside space-y-2">
                 {tool.features.map((feature, index) => (
-                  <li key={index} className="text-muted-foreground">{feature}</li>
+                  <li key={index} className="text-foreground/80 dark:text-foreground/90">{feature}</li>
                 ))}
               </ul>
             </div>
@@ -240,7 +247,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
                 {tool.platforms.map((platform, index) => (
                   <span 
                     key={index}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                    className="px-3 py-1 bg-primary/20 dark:bg-primary/30 text-primary dark:text-primary/90 rounded-full text-sm font-medium"
                   >
                     {platform}
                   </span>
@@ -257,7 +264,7 @@ export function ToolPageContent({ slug }: { slug: string }) {
                 {tool.alternatives.map((alternative, index) => (
                   <span 
                     key={index}
-                    className="px-3 py-1 border border-primary/20 text-muted-foreground rounded-full text-sm"
+                    className="px-3 py-1 border border-primary/20 dark:border-primary/30 text-foreground/80 dark:text-foreground/90 rounded-full text-sm"
                   >
                     {alternative}
                   </span>

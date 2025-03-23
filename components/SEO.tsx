@@ -25,7 +25,7 @@ export function constructMetadata({
   return {
     title: {
       default: title,
-      template: `%s | ${defaultSEO.title}`,
+      template: title === defaultSEO.title ? '%s' : `%s | ${defaultSEO.title}`,
     },
     description,
     keywords: ['developer tools', 'software recommendations', 'tech tools', 'nick\'s picks', 'development resources'],

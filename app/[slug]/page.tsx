@@ -1,45 +1,17 @@
 import { Metadata } from 'next'
-import { builder } from '@/lib/builder'
 import { constructMetadata } from '@/components/SEO'
 import { ToolPageContent } from '@/components/ToolPageContent'
 
 // Generate metadata for the page
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  try {
-    const toolsList = await builder
-      .getAll('tool', {
-        fields: 'data',
-        options: { 
-          includeRefs: true,
-        },
-        cachebust: true
-      })
-
-    const tool = toolsList.find(
-      (item: any) => item?.data?.name.toLowerCase() === decodeURIComponent(params.slug)
-    )
-
-    if (!tool?.data) {
-      return constructMetadata({
-        title: 'Not Found',
-        description: 'The requested tool could not be found.',
-        robots: false,
-      })
-    }
-
-    return constructMetadata({
-      title: tool.data.name,
-      description: tool.data.shortDescription || tool.data.description,
-      image: tool.data.image,
-      type: 'article',
-    })
-  } catch (error) {
-    return constructMetadata({
-      title: 'Error',
-      description: 'There was an error loading the tool.',
-      robots: false,
-    })
-  }
+  const decodedSlug = decodeURIComponent(params.slug).toLowerCase()
+  
+  // Since we can't access Builder.io API directly in server component due to issues,
+  // let's set a minimal metadata and let the client component handle the details
+  return constructMetadata({
+    title: `${decodedSlug.charAt(0).toUpperCase() + decodedSlug.slice(1)} - Nick's List`,
+    description: 'Tool details and information',
+  })
 }
 
 export default function ToolPage({ params }: { params: { slug: string } }) {

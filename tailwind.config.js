@@ -16,6 +16,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+        mono: ['var(--font-geist-mono)'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,28 +78,31 @@ module.exports = {
         DEFAULT: {
           css: {
             maxWidth: 'none',
-            color: '#333333',
+            color: 'hsl(var(--foreground))',
             a: {
-              color: 'inherit',
+              color: 'hsl(var(--primary))',
               textDecoration: 'none',
               fontWeight: '500',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
             },
             strong: {
-              color: 'inherit',
+              color: 'hsl(var(--foreground))',
               fontWeight: '600',
             },
             li: {
               marginTop: '0.5em',
               marginBottom: '0.5em',
-              color: '#333333',
+              color: 'hsl(var(--foreground))',
             },
             ul: {
               marginTop: '1.25em',
               marginBottom: '1.25em',
-              color: '#333333',
+              color: 'hsl(var(--foreground))',
             },
             p: {
-              color: '#333333',
+              color: 'hsl(var(--foreground))',
             },
           },
         },

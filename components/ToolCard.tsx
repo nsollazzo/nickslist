@@ -67,7 +67,7 @@ export function ToolCard({
             <ExternalLink className="h-5 w-5" />
           </a>
         </div>
-        <CardDescription className="text-xs uppercase font-bold tracking-widest">
+        <CardDescription className="text-xs uppercase font-bold tracking-widest group-hover:text-primary-foreground/90 transition-colors">
           {category}
         </CardDescription>
       </CardHeader>
